@@ -1,4 +1,4 @@
-- name: backend1 playbook
+- name: backend playbook
   hosts: all
   become: true
   tasks:
@@ -44,6 +44,7 @@
         
     - name: Download NodeJS App Dependencies
       community.general.npm:
+        name: install nps
         path: /app
         
     - name: Install MySQL client & MYSQL Python Module
