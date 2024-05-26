@@ -48,9 +48,7 @@
     
     - name: Install MySQL client & MYSQL Python Module
       ansible.builtin.dnf:
-        name:
-          - mysql
-          - python3-PyMYSQL
+        name: mysql
         state: present
     
     - name: Load Schema
