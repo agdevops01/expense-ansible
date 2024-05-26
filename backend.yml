@@ -44,7 +44,6 @@
         
     - name: Download NodeJS App Dependencies
       community.general.npm:
-        name: install nps
         path: /app
         
     - name: Install MySQL client & MYSQL Python Module
