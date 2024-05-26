@@ -2,6 +2,9 @@
   hosts: all
   become: true
   tasks:
+    - name: Setup Prompt
+      ansible.builtin.shell: set-prompt backend
+      
     - name: Disable NodeJS Default Version
       ansible.builtin.shell: dnf module disable nodejs -y
       
@@ -22,6 +25,22 @@
       ansible.builtin.copy:
       src: backend.service
       dest: /etc/systemd/system/backend.service
+      
+    - name: Delete existing application Directory
+      ansible.builtin.file:
+        path: /app
+        state: absent
+    
+    - name: Create Application  Directory
+      ansible.builtin.file:
+        path: /app
+        state: directory
+        
+    - name: Download frontend content & extract
+      ansible.builtin.unarchive:
+        src: https://expense-artifacts.s3.amazonaws.com/expense-backend-v2.zip
+        dest: /app
+        remote_src: true
         
     - name: Download NodeJS App Dependencies
       community.general.npm:
@@ -42,7 +61,7 @@
         target: /app/schema/backend.sql
         login_user: root
         login_password: ExpenseApp@1
-        login_host: mysql-{{env}}.rdevopsb79.online
+        login_host: 172.31.39.125
     
     - name: Start Backend Service
       ansible.builtin.systemd_service:
